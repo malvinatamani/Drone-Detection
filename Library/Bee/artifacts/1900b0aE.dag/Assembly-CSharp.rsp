@@ -398,6 +398,8 @@
 "Assets/Scripts/CameraFollow.cs"
 "Assets/Scripts/DroneController.cs"
 "Assets/Scripts/DronePhysicsController.cs"
+"Assets/Scripts/DroneUI.cs"
+"Assets/Scripts/RFIDDetector.cs"
 "Assets/TutorialInfo/Scripts/Readme.cs"
 -langversion:9.0
 
