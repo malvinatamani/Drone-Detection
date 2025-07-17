@@ -74,11 +74,19 @@ public class DroneController : MonoBehaviour
         Vector3 moveDir = (transform.forward * vertical + transform.right * horizontal + Vector3.up * ascend).normalized;
         rb.AddForce(moveDir * moveSpeed, ForceMode.Acceleration);
 
+        // Yaw (putar di sumbu Y)
         float yaw = 0f;
         if (Input.GetKey(KeyCode.Q)) yaw = -1f;
         if (Input.GetKey(KeyCode.E)) yaw = 1f;
-
         rb.AddTorque(Vector3.up * yaw * rotationSpeed);
+
+        // Roll (miring kiri/kanan, saat belok)
+        float roll = -horizontal; // Negatif supaya miring ke arah belok
+        rb.AddTorque(transform.forward * roll * (rotationSpeed * 0.5f));
+
+        // Pitch (miring depan/belakang, saat maju/mundur)
+        float pitch = vertical;
+        rb.AddTorque(transform.right * pitch * (rotationSpeed * 0.5f));
     }
 
     void StabilizeRotation()
