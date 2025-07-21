@@ -395,6 +395,7 @@
 "Assets/3D Envirerontment/NatureStarterKit2/Standard Assets/Effects/ImageEffects/Scripts/Twirl.cs"
 "Assets/3D Envirerontment/NatureStarterKit2/Standard Assets/Effects/ImageEffects/Scripts/VignetteAndChromaticAberration.cs"
 "Assets/3D Envirerontment/NatureStarterKit2/Standard Assets/Effects/ImageEffects/Scripts/Vortex.cs"
+"Assets/Hill Rock Mountain Terrain/Script/Camera/FlyCameraControl.cs"
 "Assets/Scripts/CameraFollow.cs"
 "Assets/Scripts/DroneController.cs"
 "Assets/Scripts/DronePhysicsController.cs"

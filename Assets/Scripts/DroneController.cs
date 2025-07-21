@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 [RequireComponent(typeof(Rigidbody))]
 public class DroneController : MonoBehaviour
@@ -8,9 +9,16 @@ public class DroneController : MonoBehaviour
     public float rotationSpeed = 100f;
     public float stabilization = 2f;
     public float landingSpeed = 2f;
+    public float turnSpeed = 2f;
+    public float waypointTolerance = 1f;
 
     private Rigidbody rb;
     private bool isFlying = false;
+
+    // Waypoint fitur belok X ke Z
+    public List<Vector3> waypoints = new List<Vector3>();
+    private int currentWaypoint = 0;
+    public bool isReturning = false;
 
     void Start()
     {
@@ -31,6 +39,17 @@ public class DroneController : MonoBehaviour
         {
             isFlying = false;
         }
+
+        // Tombol simulasi belok dari X ke Z
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            // Contoh: drone dari X=0,Z=0 ke X=20,Z=0 lalu ke X=20,Z=10
+            float yLevel = transform.position.y;
+            SetPath(
+                new Vector3(20, yLevel, 0),   // Titik belok di X
+                new Vector3(20, yLevel, 10)   // Titik lanjut di Z
+            );
+        }
     }
 
     void FixedUpdate()
@@ -38,12 +57,20 @@ public class DroneController : MonoBehaviour
         if (isFlying)
         {
             HandleLift();
-            HandleMovement();
+
+            if (isReturning && waypoints.Count > 0)
+            {
+                FollowWaypoints();
+            }
+            else
+            {
+                HandleMovement();
+            }
             StabilizeRotation();
         }
         else
         {
-            LandDrone(); // Turun perlahan saat tidak terbang
+            LandDrone();
         }
     }
 
@@ -54,10 +81,7 @@ public class DroneController : MonoBehaviour
         if (Input.GetKey(KeyCode.Space)) ascendInput = 1f;
         else if (Input.GetKey(KeyCode.LeftControl)) ascendInput = -1f;
 
-        // Hover force tetap diberikan agar drone tidak jatuh
         float hoverForce = liftForce - Physics.gravity.y;
-
-        // Tambahkan kontrol naik/turun dari input
         Vector3 totalLift = Vector3.up * (hoverForce + ascendInput * moveSpeed);
         rb.AddForce(totalLift, ForceMode.Force);
     }
@@ -74,35 +98,57 @@ public class DroneController : MonoBehaviour
         Vector3 moveDir = (transform.forward * vertical + transform.right * horizontal + Vector3.up * ascend).normalized;
         rb.AddForce(moveDir * moveSpeed, ForceMode.Acceleration);
 
-        // Yaw (putar di sumbu Y)
-        float yaw = 0f;
-        if (Input.GetKey(KeyCode.Q)) yaw = -1f;
-        if (Input.GetKey(KeyCode.E)) yaw = 1f;
-        rb.AddTorque(Vector3.up * yaw * rotationSpeed);
+        float roll = -horizontal;
+        rb.AddTorque(transform.forward * roll * rotationSpeed);
+    }
 
-        // Roll (miring kiri/kanan, saat belok)
-        float roll = -horizontal; // Negatif supaya miring ke arah belok
-        rb.AddTorque(transform.forward * roll * (rotationSpeed * 0.5f));
+    // SET JALUR DARI X KE Z
+    public void SetPath(Vector3 waypointX, Vector3 waypointZ)
+    {
+        waypoints.Clear();
+        waypoints.Add(waypointX); // Titik belok di X
+        waypoints.Add(waypointZ); // Titik lanjut di Z
+        currentWaypoint = 0;
+        isReturning = true;
+    }
 
-        // Pitch (miring depan/belakang, saat maju/mundur)
-        float pitch = vertical;
-        rb.AddTorque(transform.right * pitch * (rotationSpeed * 0.5f));
+    void FollowWaypoints()
+    {
+        if (currentWaypoint >= waypoints.Count)
+        {
+            isReturning = false;
+            return;
+        }
+
+        Vector3 target = waypoints[currentWaypoint];
+        Vector3 toTarget = target - transform.position;
+        toTarget.y = 0; // hanya sumbu XZ
+
+        if (toTarget.magnitude < waypointTolerance)
+        {
+            currentWaypoint++;
+            return;
+        }
+
+        if (toTarget.magnitude > 0.1f)
+        {
+            Quaternion targetRot = Quaternion.LookRotation(toTarget.normalized, Vector3.up);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRot, turnSpeed * Time.deltaTime * 30f);
+        }
+
+        Vector3 moveDir = transform.forward;
+        rb.AddForce(moveDir * moveSpeed, ForceMode.Acceleration);
     }
 
     void StabilizeRotation()
     {
         Quaternion desiredRotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
-        Quaternion rotationDiff = Quaternion.Inverse(transform.rotation) * desiredRotation;
-        Vector3 torque = new Vector3(rotationDiff.x, 0, rotationDiff.z) * stabilization;
-        rb.AddTorque(torque);
+        transform.rotation = Quaternion.Lerp(transform.rotation, desiredRotation, stabilization * Time.deltaTime);
     }
 
     void LandDrone()
     {
-        // Turun perlahan saat mendarat
         rb.AddForce(Vector3.down * landingSpeed, ForceMode.Acceleration);
-
-        // Stabilkan rotasi saat mendarat
         StabilizeRotation();
     }
 
@@ -110,5 +156,4 @@ public class DroneController : MonoBehaviour
     {
         return isFlying;
     }
-
 }

@@ -100,6 +100,7 @@
     <Compile Include="Assets\Scripts\DroneUI.cs" />
     <Compile Include="Assets\3D Envirerontment\NatureStarterKit2\Standard Assets\Effects\ImageEffects\Scripts\Tonemapping.cs" />
     <Compile Include="Assets\3D Envirerontment\NatureStarterKit2\Standard Assets\Effects\ImageEffects\Scripts\SunShafts.cs" />
+    <Compile Include="Assets\Hill Rock Mountain Terrain\Script\Camera\FlyCameraControl.cs" />
     <Compile Include="Assets\3D Envirerontment\NatureStarterKit2\Standard Assets\Effects\ImageEffects\Scripts\Bloom.cs" />
     <Compile Include="Assets\3D Envirerontment\NatureStarterKit2\Standard Assets\Effects\ImageEffects\Scripts\CameraMotionBlur.cs" />
   </ItemGroup>
