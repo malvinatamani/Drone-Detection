@@ -1,157 +1,216 @@
 using UnityEngine;
-using System.Collections.Generic;
 
 [RequireComponent(typeof(Rigidbody))]
 public class DroneController : MonoBehaviour
 {
-    public float liftForce = 9.8f;
-    public float moveSpeed = 5f;
-    public float rotationSpeed = 100f;
-    public float stabilization = 2f;
+    public float speed = 8f;
+    public float yawSpeed = 60f;
+    public float pitchSpeed = 30f;
+    public float altitudeSpeed = 4f;
+    public float takeoffHeight = 2f;
+    public float maxHeight = 300f;
     public float landingSpeed = 2f;
-    public float turnSpeed = 2f;
-    public float waypointTolerance = 1f;
 
     private Rigidbody rb;
     private bool isFlying = false;
-
-    // Waypoint fitur belok X ke Z
-    public List<Vector3> waypoints = new List<Vector3>();
-    private int currentWaypoint = 0;
-    public bool isReturning = false;
+    private bool isTakingOff = false;
+    private bool isLanding = false;
+    private bool isReturning = false;
+    private Vector3 basePosition;
+    private float baseY;
+    private float targetAltitude;
+    private float verticalVelocity = 0f;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        rb.useGravity = true;
+        rb.useGravity = false;
+        basePosition = transform.position;
+        baseY = transform.position.y;
+        targetAltitude = baseY;
     }
 
     void Update()
     {
-        // Tombol untuk mulai terbang
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            isFlying = true;
-        }
-
-        // Tombol untuk mendarat
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            isFlying = false;
-        }
-
-        // Tombol simulasi belok dari X ke Z
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            // Contoh: drone dari X=0,Z=0 ke X=20,Z=0 lalu ke X=20,Z=10
-            float yLevel = transform.position.y;
-            SetPath(
-                new Vector3(20, yLevel, 0),   // Titik belok di X
-                new Vector3(20, yLevel, 10)   // Titik lanjut di Z
-            );
-        }
+        HandleInput();
     }
 
     void FixedUpdate()
     {
-        if (isFlying)
+        if (isTakingOff)
         {
-            HandleLift();
-
-            if (isReturning && waypoints.Count > 0)
-            {
-                FollowWaypoints();
-            }
-            else
-            {
-                HandleMovement();
-            }
-            StabilizeRotation();
+            HandleTakeOff();
+        }
+        else if (isLanding)
+        {
+            HandleLanding();
+        }
+        else if (isReturning)
+        {
+            HandleReturnToBase();
+        }
+        else if (isFlying)
+        {
+            HandleManualFlight();
         }
         else
         {
-            LandDrone();
+            rb.velocity = Vector3.zero;
         }
     }
 
-    void HandleLift()
+    void HandleInput()
     {
-        float ascendInput = 0f;
-
-        if (Input.GetKey(KeyCode.Space)) ascendInput = 1f;
-        else if (Input.GetKey(KeyCode.LeftControl)) ascendInput = -1f;
-
-        float hoverForce = liftForce - Physics.gravity.y;
-        Vector3 totalLift = Vector3.up * (hoverForce + ascendInput * moveSpeed);
-        rb.AddForce(totalLift, ForceMode.Force);
-    }
-
-    void HandleMovement()
-    {
-        float horizontal = Input.GetAxis("Horizontal");
-        float vertical = Input.GetAxis("Vertical");
-        float ascend = 0f;
-
-        if (Input.GetKey(KeyCode.Space)) ascend = 1f;
-        if (Input.GetKey(KeyCode.LeftControl)) ascend = -1f;
-
-        Vector3 moveDir = (transform.forward * vertical + transform.right * horizontal + Vector3.up * ascend).normalized;
-        rb.AddForce(moveDir * moveSpeed, ForceMode.Acceleration);
-
-        float roll = -horizontal;
-        rb.AddTorque(transform.forward * roll * rotationSpeed);
-    }
-
-    // SET JALUR DARI X KE Z
-    public void SetPath(Vector3 waypointX, Vector3 waypointZ)
-    {
-        waypoints.Clear();
-        waypoints.Add(waypointX); // Titik belok di X
-        waypoints.Add(waypointZ); // Titik lanjut di Z
-        currentWaypoint = 0;
-        isReturning = true;
-    }
-
-    void FollowWaypoints()
-    {
-        if (currentWaypoint >= waypoints.Count)
+        // Takeoff
+        if (Input.GetKeyDown(KeyCode.T) && !isFlying && !isTakingOff)
         {
+            isTakingOff = true;
+            isLanding = false;
             isReturning = false;
-            return;
+            targetAltitude = baseY + takeoffHeight;
         }
 
-        Vector3 target = waypoints[currentWaypoint];
-        Vector3 toTarget = target - transform.position;
-        toTarget.y = 0; // hanya sumbu XZ
-
-        if (toTarget.magnitude < waypointTolerance)
+        // Landing
+        if (Input.GetKeyDown(KeyCode.L) && isFlying)
         {
-            currentWaypoint++;
-            return;
+            isLanding = true;
+            isTakingOff = false;
+            isReturning = false;
         }
 
-        if (toTarget.magnitude > 0.1f)
+        // Return to base
+        if (Input.GetKeyDown(KeyCode.B) && isFlying)
         {
-            Quaternion targetRot = Quaternion.LookRotation(toTarget.normalized, Vector3.up);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRot, turnSpeed * Time.deltaTime * 30f);
+            isReturning = true;
+            isLanding = false;
+            isTakingOff = false;
         }
 
-        Vector3 moveDir = transform.forward;
-        rb.AddForce(moveDir * moveSpeed, ForceMode.Acceleration);
+        // Saat sudah terbang, atur ketinggian pakai anak panah
+        if (isFlying && !isLanding && !isReturning)
+        {
+            if (Input.GetKey(KeyCode.UpArrow))
+            {
+                targetAltitude = Mathf.Min(targetAltitude + altitudeSpeed * Time.deltaTime, baseY + maxHeight);
+            }
+            if (Input.GetKey(KeyCode.DownArrow))
+            {
+                targetAltitude = Mathf.Max(targetAltitude - altitudeSpeed * Time.deltaTime, baseY);
+            }
+        }
+
+        // Kontrol rotasi (A/D = yaw, W/S = pitch)
+        if (isFlying && !isLanding && !isReturning)
+        {
+            // Yaw (belok kiri/kanan)
+            float yaw = 0f;
+            if (Input.GetKey(KeyCode.A)) yaw = -1f;
+            if (Input.GetKey(KeyCode.D)) yaw = 1f;
+            if (yaw != 0)
+            {
+                transform.Rotate(0, yaw * yawSpeed * Time.deltaTime, 0, Space.Self);
+            }
+
+            // Pitch (naik/turun hidung)
+            float pitch = 0f;
+            if (Input.GetKey(KeyCode.W)) pitch = 1f;
+            if (Input.GetKey(KeyCode.S)) pitch = -1f;
+            if (pitch != 0)
+            {
+                transform.Rotate(pitch * pitchSpeed * Time.deltaTime, 0, 0, Space.Self);
+            }
+        }
     }
 
-    void StabilizeRotation()
+    void HandleTakeOff()
     {
-        Quaternion desiredRotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
-        transform.rotation = Quaternion.Lerp(transform.rotation, desiredRotation, stabilization * Time.deltaTime);
+        float currentY = transform.position.y;
+        if (currentY < targetAltitude - 0.1f)
+        {
+            verticalVelocity = Mathf.Lerp(verticalVelocity, altitudeSpeed, Time.fixedDeltaTime * 2f);
+            rb.velocity = new Vector3(0, verticalVelocity, 0);
+        }
+        else
+        {
+            rb.velocity = Vector3.zero;
+            isTakingOff = false;
+            isFlying = true;
+            targetAltitude = transform.position.y;
+        }
     }
 
-    void LandDrone()
+    void HandleLanding()
     {
-        rb.AddForce(Vector3.down * landingSpeed, ForceMode.Acceleration);
-        StabilizeRotation();
+        float currentY = transform.position.y;
+        if (currentY > baseY + 0.1f)
+        {
+            verticalVelocity = Mathf.Lerp(verticalVelocity, -landingSpeed, Time.fixedDeltaTime * 2f);
+            rb.velocity = new Vector3(0, verticalVelocity, 0);
+        }
+        else
+        {
+            rb.velocity = Vector3.zero;
+            isLanding = false;
+            isFlying = false;
+            transform.position = new Vector3(transform.position.x, baseY, transform.position.z);
+            transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0); // reset pitch/roll
+        }
     }
 
+    void HandleReturnToBase()
+    {
+        Vector3 current = transform.position;
+        Vector3 target = new Vector3(basePosition.x, current.y, basePosition.z);
+
+        Vector3 horizontal = (target - current);
+        horizontal.y = 0;
+
+        if (horizontal.magnitude > 1f)
+        {
+            // Rotasi smooth ke arah base
+            Quaternion targetRot = Quaternion.LookRotation(horizontal.normalized, Vector3.up);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRot, yawSpeed * Time.deltaTime);
+
+            // Maju ke base
+            rb.velocity = transform.forward * speed + Vector3.up * verticalVelocity;
+
+            // Jaga ketinggian di targetAltitude
+            float altitudeError = targetAltitude - current.y;
+            verticalVelocity = Mathf.Lerp(verticalVelocity, Mathf.Clamp(altitudeError, -altitudeSpeed, altitudeSpeed), Time.fixedDeltaTime * 2f);
+        }
+        else
+        {
+            // Setelah sampai base, langsung landing
+            isReturning = false;
+            isLanding = true;
+        }
+    }
+
+    void HandleManualFlight()
+    {
+        // Maju terus
+        rb.velocity = transform.forward * speed;
+
+        // Atur ketinggian smooth menuju targetAltitude
+        float currentY = transform.position.y;
+        float altitudeError = targetAltitude - currentY;
+        verticalVelocity = Mathf.Lerp(verticalVelocity, Mathf.Clamp(altitudeError, -altitudeSpeed, altitudeSpeed), Time.fixedDeltaTime * 2f);
+        rb.velocity += Vector3.up * verticalVelocity;
+
+        // Clamp max height
+        if (transform.position.y > baseY + maxHeight)
+        {
+            transform.position = new Vector3(transform.position.x, baseY + maxHeight, transform.position.z);
+            verticalVelocity = 0;
+        }
+        if (transform.position.y < baseY)
+        {
+            transform.position = new Vector3(transform.position.x, baseY, transform.position.z);
+            verticalVelocity = 0;
+        }
+    }
+
+    // Untuk UI/Script lain
     public bool IsFlying()
     {
         return isFlying;
