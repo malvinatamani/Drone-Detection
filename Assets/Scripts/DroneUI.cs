@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI; // pakai Text biasa
 // Kalau kamu pakai TextMeshPro, ganti ke:
 // using TMPro;
+using UnityEngine.SceneManagement;
 
 public class DroneUI : MonoBehaviour
 {
@@ -22,5 +23,10 @@ public class DroneUI : MonoBehaviour
         {
             statusText.text = "Tekan L untuk Mendarat";
         }
+    }
+
+    public void back_to_menu()
+    {
+        SceneManager.LoadScene("MainMenu");
     }
 }

@@ -60,6 +60,7 @@
   <ItemGroup>
     <Compile Include="Assets\3D Envirerontment\NatureStarterKit2\Standard Assets\Effects\ImageEffects\Scripts\MotionBlur.cs" />
     <Compile Include="Assets\3D Envirerontment\NatureStarterKit2\Standard Assets\Effects\ImageEffects\Scripts\ContrastEnhance.cs" />
+    <Compile Include="Assets\Scripts\MainMenuUI.cs" />
     <Compile Include="Assets\3D Envirerontment\NatureStarterKit2\Standard Assets\Effects\ImageEffects\Scripts\SepiaTone.cs" />
     <Compile Include="Assets\3D Envirerontment\NatureStarterKit2\Standard Assets\Effects\ImageEffects\Scripts\ScreenSpaceAmbientObscurance.cs" />
     <Compile Include="Assets\Scripts\DronePhysicsController.cs" />

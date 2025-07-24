@@ -400,6 +400,7 @@
 "Assets/Scripts/DroneController.cs"
 "Assets/Scripts/DronePhysicsController.cs"
 "Assets/Scripts/DroneUI.cs"
+"Assets/Scripts/MainMenuUI.cs"
 "Assets/Scripts/RFIDDetector.cs"
 "Assets/TutorialInfo/Scripts/Readme.cs"
 -langversion:9.0
