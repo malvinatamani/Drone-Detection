@@ -3,12 +3,12 @@
   "WorkspaceRootPath": "D:\\unity\\Drone Detection\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{8D4C0605-C979-6CF2-8473-D89228D2B0F9}|Assembly-CSharp.csproj|d:\\unity\\drone detection\\assets\\scripts\\camerafollow.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8D4C0605-C979-6CF2-8473-D89228D2B0F9}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\camerafollow.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{8D4C0605-C979-6CF2-8473-D89228D2B0F9}|Assembly-CSharp.csproj|d:\\unity\\drone detection\\assets\\professionalassets\\dronepack\\scripts\\pa_dronecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8D4C0605-C979-6CF2-8473-D89228D2B0F9}|Assembly-CSharp.csproj|solutionrelative:assets\\professionalassets\\dronepack\\scripts\\pa_dronecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{8D4C0605-C979-6CF2-8473-D89228D2B0F9}|Assembly-CSharp.csproj|D:\\unity\\Drone Detection\\assets\\scripts\\dronecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8D4C0605-C979-6CF2-8473-D89228D2B0F9}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\dronecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{8D4C0605-C979-6CF2-8473-D89228D2B0F9}|Assembly-CSharp.csproj|d:\\unity\\drone detection\\assets\\professionalassets\\dronepack\\scripts\\turbine.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8D4C0605-C979-6CF2-8473-D89228D2B0F9}|Assembly-CSharp.csproj|solutionrelative:assets\\professionalassets\\dronepack\\scripts\\turbine.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{8D4C0605-C979-6CF2-8473-D89228D2B0F9}|Assembly-CSharp.csproj|D:\\unity\\Drone Detection\\assets\\scripts\\mainmenuui.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -21,6 +21,14 @@
     {
       "AbsoluteMoniker": "D:0:0:{8D4C0605-C979-6CF2-8473-D89228D2B0F9}|Assembly-CSharp.csproj|D:\\unity\\Drone Detection\\assets\\scripts\\droneui.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{8D4C0605-C979-6CF2-8473-D89228D2B0F9}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\droneui.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8D4C0605-C979-6CF2-8473-D89228D2B0F9}|Assembly-CSharp.csproj|D:\\unity\\Drone Detection\\assets\\scripts\\dronecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8D4C0605-C979-6CF2-8473-D89228D2B0F9}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\dronecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8D4C0605-C979-6CF2-8473-D89228D2B0F9}|Assembly-CSharp.csproj|D:\\unity\\Drone Detection\\assets\\scripts\\camerafollow.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8D4C0605-C979-6CF2-8473-D89228D2B0F9}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\camerafollow.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -30,8 +38,34 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 0,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "PA_DroneController.cs",
+              "DocumentMoniker": "D:\\unity\\Drone Detection\\Assets\\ProfessionalAssets\\DronePack\\Scripts\\PA_DroneController.cs",
+              "RelativeDocumentMoniker": "Assets\\ProfessionalAssets\\DronePack\\Scripts\\PA_DroneController.cs",
+              "ToolTip": "D:\\unity\\Drone Detection\\Assets\\ProfessionalAssets\\DronePack\\Scripts\\PA_DroneController.cs",
+              "RelativeToolTip": "Assets\\ProfessionalAssets\\DronePack\\Scripts\\PA_DroneController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-26T08:58:39.025Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Turbine.cs",
+              "DocumentMoniker": "D:\\unity\\Drone Detection\\Assets\\ProfessionalAssets\\DronePack\\Scripts\\Turbine.cs",
+              "RelativeDocumentMoniker": "Assets\\ProfessionalAssets\\DronePack\\Scripts\\Turbine.cs",
+              "ToolTip": "D:\\unity\\Drone Detection\\Assets\\ProfessionalAssets\\DronePack\\Scripts\\Turbine.cs",
+              "RelativeToolTip": "Assets\\ProfessionalAssets\\DronePack\\Scripts\\Turbine.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwCwAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-24T09:05:29.708Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Document",
               "DocumentIndex": 2,
@@ -53,7 +87,7 @@
               "RelativeDocumentMoniker": "Assets\\Scripts\\RFIDDetector.cs",
               "ToolTip": "D:\\unity\\Drone Detection\\Assets\\Scripts\\RFIDDetector.cs",
               "RelativeToolTip": "Assets\\Scripts\\RFIDDetector.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAqwA8AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-15T07:50:52.031Z",
               "EditorCaption": ""
@@ -66,14 +100,14 @@
               "RelativeDocumentMoniker": "Assets\\Scripts\\DroneUI.cs",
               "ToolTip": "D:\\unity\\Drone Detection\\Assets\\Scripts\\DroneUI.cs",
               "RelativeToolTip": "Assets\\Scripts\\DroneUI.cs",
-              "ViewState": "AgIAAA0AAAAAAAAAAAA1wBoAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAQwBoAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-15T06:57:18.246Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 5,
               "Title": "DroneController.cs",
               "DocumentMoniker": "D:\\unity\\Drone Detection\\Assets\\Scripts\\DroneController.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\DroneController.cs",
@@ -86,13 +120,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 6,
               "Title": "CameraFollow.cs",
               "DocumentMoniker": "D:\\unity\\Drone Detection\\Assets\\Scripts\\CameraFollow.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\CameraFollow.cs",
               "ToolTip": "D:\\unity\\Drone Detection\\Assets\\Scripts\\CameraFollow.cs",
               "RelativeToolTip": "Assets\\Scripts\\CameraFollow.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-14T10:02:41.324Z",
               "EditorCaption": ""
